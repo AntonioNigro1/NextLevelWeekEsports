@@ -1,9 +1,12 @@
 import express from "express";
+import cors from "cors";
 import { PrismaClient } from "@prisma/client";
-import {convertHourMin} from './utils/convert-time'
+import { convertHourMin, convertMinHour } from "./utils/convert-time";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+
 const prisma = new PrismaClient({
   log: ["query"],
 });
@@ -31,7 +34,7 @@ app.post("/games/:id/ads", async (req, res) => {
       name: body.name,
       yearsPlaying: body.yearsPlaying,
       discord: body.discord,
-      weekDays: body.weekDays.join(','),
+      weekDays: body.weekDays.join(","),
       hourStart: convertHourMin(body.hourStart),
       hourEnd: convertHourMin(body.hourEnd),
       useVoiceChat: body.useVoiceChat,
@@ -63,6 +66,8 @@ app.get("/games/:id/ads", async (req, res) => {
       return {
         ...ad,
         weekDays: ad.weekDays.split(","),
+        hourStart: convertMinHour(ad.hourStart),
+        hourEnd: convertMinHour(ad.hourEnd),
       };
     })
   );
