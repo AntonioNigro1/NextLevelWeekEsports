@@ -1,5 +1,5 @@
 import { useEffect,  useState } from "react";
-import { FlatList, Image, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, TouchableOpacity, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
@@ -13,6 +13,7 @@ import { GameParams } from "../../@types/navigation";
 import { Background } from "../../components/Background";
 import { Heading } from "../../components/Heading";
 import { DuoCard, DuoCardProps } from "../../components/DuoCard";
+
 
 
 
@@ -59,8 +60,14 @@ export function Game() {
         )}
         horizontal
         style={styles.containerList}
-        contentContainerStyle={styles.contentList}
+        contentContainerStyle={[duos.length> 0?styles.contentList : styles.emptyListContent]}
         showsVerticalScrollIndicator={false}
+        
+        ListEmptyComponent={()=> (
+          <Text style={styles.emptyListText}>
+            Não há anúncios publicados ainda.
+          </Text>
+        )}
         />
         
       </SafeAreaView>
